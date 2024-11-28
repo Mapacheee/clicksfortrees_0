@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recolección de Madera</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Asegúrate de tener jQuery -->
+</head>
+<body>
+<h1>Jugador: {{ player.name }}</h1>
+<p>Árboles: {{ player.trees }}</p>
+<p>Madera: <span id="wood-count">{{ player.wood }}</span></p>
+
+<button id="collect-wood-btn">Recolectar Madera</button>
+
+<script>
+    $(document).ready(function() {
+        $('#collect-wood-btn').click(function() {
+            $.ajax({
+                url: "{% url 'update_wood' %}",  // Asegúrate de que esta URL esté correctamente configurada
+                method: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',  // Es necesario para evitar errores de CSRF
+                },
+                success: function(response) {
+                    $('#wood-count').text(response.wood);  // Actualiza el contador de madera en el HTML
+                },
+                error: function() {
+                    alert("Hubo un error al recolectar madera");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

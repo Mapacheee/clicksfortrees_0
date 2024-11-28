@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Árboles</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+<h1>Bienvenido a la tienda</h1>
+<p>Clics disponibles: {{ player.clicks }}</p>
+
+<h2>Árboles disponibles para comprar:</h2>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        {% for tree in trees %}
+            <li>
+                <img src="{% static 'images/tree.png' %}" alt="{{ tree.name }}" width="50" height="50">
+                <strong>{{ tree.name }}</strong> - {{ tree.wood_per_click }} madera por clic
+                <button type="submit" name="tree_id" value="{{ tree.id }}">Comprar</button>
+            </li>
+        {% endfor %}
+    </ul>
+</form>
+
+<p><a href="/">Volver al juego</a></p>
+</body>
+</html>
